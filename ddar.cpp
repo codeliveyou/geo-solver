@@ -3,6 +3,8 @@
 #include <pybind11/stl.h>
 #include <pybind11/chrono.h>
 #include <pybind11/iostream.h>
+#include <pybind11/embed.h>
+
 namespace py = pybind11;
 
 std::tuple <
@@ -51,8 +53,9 @@ std::tuple <
             std::vector<py::object> args = p.attr("goal").attr("args").cast<std::vector<py::object>>();
             std::vector<py::object> goal_args;
             ////////////////////////////////////
+
             for(auto x : args) {
-                goal_args.push_back(g.attr("get")(x.cast<std::string>()).cast<py::object>());
+                goal_args.push_back(g.attr("get")(x.cast<std::string>(), py::eval("lambda x: int(x)")).cast<py::object>());
             }
             if(!g.attr("check")(p.attr("goal").attr("name"), goal_args).is_none()
                 && g.attr("check")(p.attr("goal").attr("name"), goal_args).cast<bool>()) {
@@ -168,7 +171,7 @@ auto get_proof_steps(
 
     auto goal_args = g.attr("names2nodes")(goal.attr("args"));
     py::object Dependency = problem.attr("Dependency");
-    py::object query = Dependency(goal.attr("name").cast<std::string>(), goal_args);
+    py::object query = Dependency(goal.attr("name").cast<std::string>(), goal_args, py::none(), py::none());
     
     auto [setup, aux, log, setup_points] = get_logs(query, g, merge_trivials).cast<std::tuple<
         std::vector<py::object>,

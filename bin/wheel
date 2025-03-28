@@ -1,4 +1,4 @@
-#!/home/ubuntu/Documents/alphageometry/bin/python
+#!/home/ubuntu/Documents/geo-solver/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

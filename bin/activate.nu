@@ -32,7 +32,7 @@ export-env {
       }
     }
 
-    let virtual_env = r#'/home/ubuntu/Documents/alphageometry'#
+    let virtual_env = r#'/home/ubuntu/Documents/geo-solver'#
     let bin = r#'bin'#
 
     let is_windows = ($nu.os-info.family) == 'windows'
